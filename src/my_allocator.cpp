@@ -15,7 +15,7 @@ struct my_allocator {
         using other = my_allocator<U, MAX>;
     };
 
-    my_allocator() = default;
+    my_allocator() {}
     ~my_allocator() = default;
 
     // Не хочу копировать мапу
@@ -25,19 +25,18 @@ struct my_allocator {
     T* allocate(std::size_t n) {
         std::cout << "alloc" << "[n = " << n << "]" << std::endl;
 
-        if (n + count_ > MAX) {
+        // Места больше нет
+        if (_begin + n >= _stor.end()) {
             throw std::bad_alloc();
         }
-        auto p = std::malloc(n * sizeof(T));
-        if (!p) {
-            throw std::bad_alloc();
-        }
-        return static_cast<T*>(p);
+
+        T* ret = _begin;
+        _begin += n;
+        return ret;
     }
 
-    void deallocate(T* p, std::size_t n) {
-        std::cout << "dealloc" << "[n = " << n << "]" << std::endl;
-        std::free(p);
+    void deallocate(T*, std::size_t) {
+        // We do not deallocate memory
     }
 
     template <typename U, typename... Args>
@@ -53,15 +52,14 @@ struct my_allocator {
     }
 
    private:
-    std::map<int, T> _stor{};
-    size_t count_ = 0;
+    std::array<T, MAX> _stor{};
+    std::array<T, MAX>::iterator _begin = _stor.begin();
 };
 
 int main() {
-    auto v = std::vector<int, my_allocator<int, 10>>{};
+    auto v = std::vector<int, my_allocator<int, 20>>{};
     v.reserve(5);
     for (int i = 0; i < 6; ++i) {
-        std::cout << "vector size = " << v.size() << std::endl;
         v.emplace_back(i);
         std::cout << std::endl;
     }
