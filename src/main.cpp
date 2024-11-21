@@ -12,8 +12,8 @@ int main() {
             std::cout << std::endl;
         }
     */
-
-    auto m = std::map<int, float, std::less<int>, my_allocator<std::pair<const int, float>, 100>>{};
+    using alloc = my_allocator<std::pair<const int, int>, 100>;
+    auto m = std::map<int, int, std::less<int>, alloc>{};
 
     for (int i = 0; i < 3; ++i) {
         m[i] = static_cast<float>(i);
