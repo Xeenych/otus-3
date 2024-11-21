@@ -26,7 +26,7 @@ struct my_allocator {
         std::cout << "alloc" << "[n = " << n << "]" << std::endl;
 
         // Места больше нет
-        if (_begin + n >= _stor.end()) {
+        if (_begin + n > _stor.end()) {
             throw std::bad_alloc();
         }
 
@@ -41,17 +41,17 @@ struct my_allocator {
 
     template <typename U, typename... Args>
     void construct(U* p, Args&&... args) {
-        std::cout << "construct" << std::endl;
+        //std::cout << "construct" << std::endl;
         new (p) U(std::forward<Args>(args)...);
     };
 
     template <typename U>
     void destroy(U* p) {
-        std::cout << "destroy" << std::endl;
+        //std::cout << "destroy" << std::endl;
         p->~U();
     }
 
    private:
-    std::array<T, MAX> _stor{};
-    std::array<T, MAX>::iterator _begin = _stor.begin();
+    typename std::array<T, MAX> _stor{};
+    typename std::array<T, MAX>::iterator _begin = _stor.begin();
 };
