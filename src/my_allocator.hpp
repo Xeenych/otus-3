@@ -1,6 +1,6 @@
+#pragma once
+#include <array>
 #include <iostream>
-#include <map>
-#include <vector>
 
 template <typename T, size_t MAX>
 struct my_allocator {
@@ -55,22 +55,3 @@ struct my_allocator {
     std::array<T, MAX> _stor{};
     std::array<T, MAX>::iterator _begin = _stor.begin();
 };
-
-int main() {
-    /*
-        auto v = std::vector<int, my_allocator<int, 20>>{};
-        v.reserve(5);
-        for (int i = 0; i < 6; ++i) {
-            v.emplace_back(i);
-            std::cout << std::endl;
-        }
-    */
-
-    auto m = std::map<int, float, std::less<int>, my_allocator<std::pair<const int, float>, 100>>{};
-
-    for (int i = 0; i < 3; ++i) {
-        m[i] = static_cast<float>(i);
-    }
-
-    return 0;
-}

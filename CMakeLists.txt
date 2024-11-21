@@ -7,7 +7,7 @@ add_compile_options(-Wextra)
 add_compile_options(-Warray-bounds)
 add_compile_options(-Weffc++)
 
-add_executable(allocator src/my_allocator.cpp)
+add_executable(allocator src/main.cpp)
 set_target_properties(allocator PROPERTIES CXX_STANDARD 20 CXX_STANDARD_REQUIRED ON)
 
 #add_executable(01_std_03_allocator simple_allocator.cpp)
