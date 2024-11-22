@@ -23,7 +23,7 @@ struct my_allocator {
     my_allocator(const my_allocator<U, MAX>&) = delete;
 
     T* allocate(std::size_t n) {
-        std::cout << "alloc" << "[n = " << n << "]" << std::endl;
+        //std::cout << "alloc" << "[n = " << n << "]" << std::endl;
 
         // Места больше нет
         if (_begin + n > _stor.end()) {

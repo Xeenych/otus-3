@@ -47,22 +47,27 @@ int main() {
         m2[i] = fact(i);
     }
 
-    // 5. Вывод на экран всех значений
+    // 5. Вывод на экран всех значений, хранящихся в контейнере
     std::cout << m2;
 
     // 6. Создание экземпляра своего контейнера
-    // my_container<int, my_allocator<int, 100>> m3;
     my_container<int> m3;
 
     // 7. Заполнение своего контейнера числами от 0 до 9
     for (int i = 0; i < 10; ++i) {
-        // m3.emplace_back(i);
-        m3.push_back(55);
+        m3.push_back(i);
     }
 
-    std::cout << "size: " << m3.size() << std::endl;
+    // 8. Создание экземпляра своего контейнера с новым аллокатором
+    my_container<int, my_allocator<int, 10>> m4;
 
-    for (const auto& i : m3) {
+    // 9. Заполнение своего контейнера числами от 0 до 9
+    for (int i = 0; i < 10; ++i) {
+        m4.push_back(i);
+    }
+
+    // 10. Вывод на экран всех значений в контейнере
+    for (const auto& i : m4) {
         std::cout << i << std::endl;
     }
 

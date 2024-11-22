@@ -13,40 +13,33 @@ class my_container {
     my_container() {}
 
     void push_back(const T& val) {
-        auto* p = _a.allocate(1);
-        if (!_begin) {
-            _begin = p;
+        if (_size == _capacity) {
+            auto old_capacity = _capacity;
+            _capacity = 10;
+
+            T* newData = _a.allocate(_capacity);
+            if (_data) {
+                std::copy(_data, _data + old_capacity, newData);
+                std::swap(newData, _data);
+                _a.deallocate(newData, old_capacity);
+            } else {
+                _data = newData;
+            }
         }
-        _end = p + 1;
-        _a.construct(p, val);
-        // std::copy(&val, &val + 1, p);
+        _a.construct(_data + _size, val);
+        ++_size;
     }
 
-    template <class... Args>
-    T& emplace_back(Args&&... args) {
-        auto* p = _a.allocate(1);
-        if (!_begin) {
-            _begin = p;
-        }
-        _end = std::next(p);
-        _a.construct(p, args...);
-        return *p;
-    }
+    size_t size() const { return _size; }
 
-    size_t size() const {
-        if (!_end || !_begin) {
-            return 0;
-        }
-        return _end - _begin;
-    }
-
-    const_iterator begin() const { return _begin; }
-    iterator begin() { return _begin; }
-    const_iterator end() const { return _end; }
-    iterator end() { return _end; }
+    const_iterator begin() const { return _data; }
+    iterator begin() { return _data; }
+    const_iterator end() const { return _data + _size; }
+    iterator end() { return _data + _size; }
 
    private:
     allocator_type _a{};
-    iterator _begin = nullptr;
-    iterator _end = nullptr;
+    std::size_t _size = 0;
+    std::size_t _capacity = 0;
+    T* _data = nullptr;
 };
